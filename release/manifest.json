@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "builds": [
+    {
+      "edition": "Xbox 360 disc",
+      "version": "0.7.4",
+      "xex_sha256": "2278db216b74ec116585a494e05d167ef65e7ffe3b35a40325a71902428ec940",
+      "image_sha256": "d0770f1ba136a0072305f114353cc9a3661160af813652ccddc7e0f939e40332",
+      "nro": "usf4.nro",
+      "nro_sha256": "a591ee4cb84eddb0cb36745f895b6398b6450fb9bc7f4b4cf4a1bab46f1636ad",
+      "nro_size": 62159111,
+      "recipe": "recipe-0.7.4.json",
+      "containers_sha256": "72e8497aeae26e04a6b22405b5b103d5c7eaf274adb2cf2d89211f9ae55ce587",
+      "library_sha256": "201e0bf70cbf49f51c409271a3a63f615c2adeccf91fe1db40c08ab44e3fbec9",
+      "library_size": 26339212,
+      "index_sha256": "4b79e9d8c76cd3aca267d3dc965040344109ceb2cf35d382fee526bbfdacb231",
+      "index_size": 961880,
+      "game_files": 972,
+      "game_bytes": 8013195104
+    }
+  ]
+}
