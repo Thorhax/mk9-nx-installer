@@ -3,13 +3,13 @@
   "builds": [
     {
       "edition": "Xbox 360 disc",
-      "version": "0.7.4",
+      "version": "0.7.5",
       "xex_sha256": "2278db216b74ec116585a494e05d167ef65e7ffe3b35a40325a71902428ec940",
       "image_sha256": "d0770f1ba136a0072305f114353cc9a3661160af813652ccddc7e0f939e40332",
       "nro": "usf4.nro",
-      "nro_sha256": "a591ee4cb84eddb0cb36745f895b6398b6450fb9bc7f4b4cf4a1bab46f1636ad",
-      "nro_size": 62159111,
-      "recipe": "recipe-0.7.4.json",
+      "nro_sha256": "22abaa1a1e1f4ab5aa0ba41b3d61ed1d5f1240428c9822fb81d5323dd95be364",
+      "nro_size": 67029255,
+      "recipe": "recipe-0.7.5.json",
       "containers_sha256": "72e8497aeae26e04a6b22405b5b103d5c7eaf274adb2cf2d89211f9ae55ce587",
       "library_sha256": "201e0bf70cbf49f51c409271a3a63f615c2adeccf91fe1db40c08ab44e3fbec9",
       "library_size": 26339212,
