@@ -1,5 +1,18 @@
 {
 "version": 1,
+"emz_lengths": {
+"archive/shader/PsBgShader.emz@0": 16644,
+"archive/shader/PsUserShader.emz@0": 42908,
+"archive/shader/VsBgShader.emz@0": 13270,
+"archive/shader/VsUserShader.emz@0": 31002,
+"dvd_patch/patch.eaf@7274496": 16937,
+"dvd_patch/patch.eaf@7291648": 44081,
+"dvd_patch/patch.eaf@7341568": 13984,
+"dvd_patch/patch.eaf@7355648": 31712,
+"patch_ae2/patch_ae2.eaf@105216": 32280,
+"patch_ae2/patch_ae2.eaf@22272": 17148,
+"patch_ae2/patch_ae2.eaf@39680": 45533
+},
 "containers": [
 {
 "name": "ps_0017d3847de800ef.bin",
