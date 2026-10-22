@@ -64,7 +64,7 @@ of `release/manifest.json` (NRO SHA-256 and size, fingerprints of the game and o
 copy with the page's code:
 
 ```sh
-node test/release_node.mjs <game .iso> <usf4.nro> <recipe.json> --version 0.7.5 --write --library-out <folder>
+node test/release_node.mjs <game .iso> <usf4.nro> <recipe.json> --version 0.7.6 --write --library-out <folder>
 ```
 
 Test the NRO with exactly that library first (`--library-out`; on the PC build, `SA2_SHADER_LIBRARY=<path>` loads

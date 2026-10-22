@@ -2,7 +2,7 @@
 // fingerprints of default.xex and of its image, of the shader containers the recipe rebuilds, of the shader library
 // made from them (written to --library-out, so the NRO can be tested with exactly that library first), the game file
 // count and size, and the NRO's SHA-256 and size.
-// Usage: node test/release_node.mjs <game .iso or folder> <usf4.nro> <recipe.json> --version 0.7.5 [--write]
+// Usage: node test/release_node.mjs <game .iso or folder> <usf4.nro> <recipe.json> --version 0.7.6 [--write]
 //          [--library-out <folder>]
 import fs from 'node:fs';
 import path from 'node:path';
