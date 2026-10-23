@@ -25,9 +25,16 @@ ready to extract into `sdmc:/switch/`. Everything runs in your browser: the game
    that Direct3D builds itself at run time are on no disc; the recipe carries them (about 5 KB). It then translates
    the Xbox 360 microcode to HLSL (XenosRecomp), compiles it to SPIR-V (DXC) and packs the library. The library must
    match, byte for byte, the one the NRO was tested with.
+
+   From 0.8.0 the NRO draws with Renut's renderer on deko3d and needs `deko3d_glsl.bin` instead (`lib/deko3d.js`, from
+   sa2-nx-installer): the same 874 containers go through Renut's translator (`wasm/renut_hlsl`, built from usf4-nx's
+   `app/thirdparty/reblue-XenosRecomp` by `wasm/src/deko3d/build_wasm_deko3d.sh`), DXC, SPIRV-Cross
+   (`wasm/spirv_cross`) and the deko3d GLSL passes (`lib/deko3d_glsl.js`), and the package must match the SHA-256 of
+   the build's `"deko3d"` entry. A build has the library, the deko3d package, or both.
 5. Streams the zip to disk through the service worker, so an 8 GB package never has to fit in memory.
 
-The zip holds `usf4-nx/usf4.nro` with its `LICENSES.txt`, `sa2_shaders.mesp` + `.idx` and the game files in
+The zip holds `usf4-nx/usf4.nro` with its `LICENSES.txt`, the shaders (`deko3d_glsl.bin` from 0.8.0, `sa2_shaders.mesp`
++ `.idx` before) and the game files in
 `usf4-nx/game_root/` (as on the disc, without `$SystemUpdate`). The update zip holds the NRO, its licenses and the
 shaders. Neither holds `usf4.toml`: the game writes it at its first start, so an update never overwrites your settings.
 
@@ -65,6 +72,14 @@ copy with the page's code:
 
 ```sh
 node test/release_node.mjs <game .iso> <usf4.nro> <recipe.json> --version 0.7.6 --write --library-out <folder>
+```
+
+For a deko3d build (0.8.0 on), make the package from your copy with the page's code and compare it with usf4-nx's own
+(`out/deko3d_shaders/glsl_opt`, which names the build's shaders); its SHA-256, size, passes and shader list go in the
+build's `"deko3d"` entry. Test the NRO with exactly that `deko3d_glsl.bin` beside it first:
+
+```sh
+node test/deko3d_node.mjs <game .iso or folder> release/recipe-<version>.json <usf4-nx>/out/deko3d_shaders/glsl_opt --out deko3d_glsl.bin
 ```
 
 Test the NRO with exactly that library first (`--library-out`; on the PC build, `SA2_SHADER_LIBRARY=<path>` loads

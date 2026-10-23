@@ -55,6 +55,12 @@
     .hint { margin: calc(var(--pad) * .5) 0 0; }
     .note { margin: calc(var(--pad) * .6) 0 0; padding: calc(var(--pad) * .45) calc(var(--pad) * .6);
       background: var(--inset); border: 1px solid var(--line); border-radius: 10px; }
+    /* the download notice, in four languages of its own (the reader's first): see app.js */
+    .notice { border-color: rgba(245, 197, 24, .35); }
+    .notice p { margin: 0; }
+    .notice .langs { display: flex; gap: 6px; margin: 0 0 calc(var(--pad) * .4); }
+    .notice .langs button { margin: 0; padding: .15em .6em; font-size: .85em; font-weight: 700; }
+    .notice .langs button[aria-pressed=true] { background: var(--blue); border-color: #5b8cff; }
     .chosen { color: var(--muted); margin-top: calc(var(--pad) * .35); word-break: break-all; }
     .choices { display: grid; justify-items: start; row-gap: calc(var(--pad) * .4); }
     .choices button { margin: 0; }
@@ -111,6 +117,30 @@
     <p class="lead" data-i18n-html="lead"></p>
   </header>
 
+  <section class="notice" id="notice" aria-label="Download help">
+    <div class="langs" role="group">
+      <button type="button" data-notice="en">EN</button>
+      <button type="button" data-notice="pt">PT</button>
+      <button type="button" data-notice="es">ES</button>
+      <button type="button" data-notice="zh-Hans">中文</button>
+    </div>
+    <p lang="en" data-notice-text="en"><strong>Download trouble?</strong> This page downloads the Switch build (about
+      64 MB) from GitHub. If it stops with "Failed to fetch" or a download error: check your internet connection, turn
+      off any VPN, ad or download blocker and antivirus web filter for this page, then try again in Firefox or
+      Chrome.</p>
+    <p lang="pt" data-notice-text="pt" hidden><strong>Problemas com o download?</strong> Esta página baixa a versão para
+      Switch (cerca de 64 MB) do GitHub. Se parar com "Failed to fetch" ou um erro de download: verifique sua conexão
+      com a internet, desative qualquer VPN, bloqueador de anúncios ou de downloads e o filtro web do antivírus para
+      esta página, e tente novamente no Firefox ou no Chrome.</p>
+    <p lang="es" data-notice-text="es" hidden><strong>¿Problemas con la descarga?</strong> Esta página descarga la versión
+      para Switch (unos 64 MB) desde GitHub. Si se detiene con "Failed to fetch" o un error de descarga: comprueba tu
+      conexión a internet, desactiva cualquier VPN, bloqueador de anuncios o de descargas y el filtro web del antivirus
+      para esta página, y vuelve a intentarlo en Firefox o Chrome.</p>
+    <p lang="zh-Hans" data-notice-text="zh-Hans" hidden><strong>下载遇到问题？</strong>本页面会从 GitHub 下载 Switch 版本（约
+      64 MB）。如果出现 “Failed to fetch” 或下载错误：请检查网络连接，对本页面关闭 VPN、广告或下载拦截插件以及杀毒软件的网页过滤功能，然后使用
+      Firefox 或 Chrome 重试。</p>
+  </section>
+
   <section>
     <h2 data-i18n="step1">1. Choose your game</h2>
     <label class="button" for="package" data-i18n="formatPackage">Disc image (.iso)</label>
@@ -149,6 +179,7 @@
       <li data-i18n-html="step3Start"></li>
       <li data-i18n-html="step3First"></li>
     </ol>
+    <p class="note" data-i18n-html="step3Update"></p>
   </section>
 
   <footer>

@@ -7,6 +7,8 @@ import createHlslModule from '../wasm/hlsl.mjs';
 import createDxcModule from '../wasm/dxc_web.mjs';
 import createPackModule from '../wasm/pack.mjs';
 import createLzxModule from '../wasm/lzx.mjs';
+import createRenutHlslModule from '../wasm/renut_hlsl.mjs';
+import createSpirvCrossModule from '../wasm/spirv_cross.mjs';
 
 export const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 
@@ -71,5 +73,7 @@ export async function loadModules(verbose = false) {
     dxc: await createDxcModule(options('dxc')),
     pack: await createPackModule(options('pack')),
     lzx: await createLzxModule(options('lzx')),
+    renutHlsl: await createRenutHlslModule(options('renut_hlsl')),
+    spirvCross: await createSpirvCrossModule(options('spirv_cross')),
   };
 }

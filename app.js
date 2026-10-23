@@ -340,3 +340,19 @@ async function makePackage(onlyUpdate) {
 
 create.addEventListener('click', () => makePackage(false));
 update.addEventListener('click', () => makePackage(true));
+
+// The download notice: its own four languages, the reader's first (browser languages), English otherwise.
+{
+  const pick = (lang) => {
+    for (const p of document.querySelectorAll('[data-notice-text]')) p.hidden = p.dataset.noticeText !== lang;
+    for (const b of document.querySelectorAll('[data-notice]')) b.setAttribute('aria-pressed', String(b.dataset.notice === lang));
+  };
+  const wanted = (navigator.languages || [navigator.language || 'en']).map((l) => l.toLowerCase());
+  const first = wanted
+    .map((l) => (l.startsWith('pt') ? 'pt' : l.startsWith('es') ? 'es' : l === 'zh' || l.startsWith('zh-cn') ||
+      l.startsWith('zh-sg') || l.startsWith('zh-hans') ? 'zh-Hans' : l.startsWith('en') ? 'en' : null))
+    .find(Boolean);
+  pick(first || 'en');
+  for (const b of document.querySelectorAll('[data-notice]')) b.addEventListener('click', () => pick(b.dataset.notice));
+}
+
