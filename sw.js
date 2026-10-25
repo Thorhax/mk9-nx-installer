@@ -18,6 +18,7 @@ const PAGE_FILES = [
   'icons/apple-touch-icon.png',
   'shader_common.h',
   'renut_shader_common.h',
+  'lib/fflate.js',
   'lib/flags.js',
   'lib/deko3d.js',
   'lib/deko3d_glsl.js',
