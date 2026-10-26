@@ -1,4 +1,4 @@
-# The NRO is a release asset of the usf4-nx repository; the deployment workflow downloads it.
+# The NRO is a release asset of the mk9-nx repository; the deployment workflow downloads it.
 release/*.nro
 *.zip
 node_modules/

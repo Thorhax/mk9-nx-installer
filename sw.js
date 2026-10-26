@@ -4,14 +4,15 @@
 // The generator sends the zip through a MessagePort, one chunk per "pull", so memory use stays bounded however big
 // the zip is.
 
-const PAGE_CACHE = 'usf4-nx-page';
-const PROGRAM_CACHE = 'usf4-nx-programs';
+const PAGE_CACHE = 'mk9-nx-page';
+const PROGRAM_CACHE = 'mk9-nx-programs';
 // Everything the page needs to make a package except the program (about 55 MB, kept once it is used).
 const PAGE_FILES = [
   './',
   'index.html',
   'app.js',
   'worker.js',
+  'deko3d_worker.js',
   'icons/icon-16.png',
   'icons/icon-32.png',
   'icons/icon-192.png',
@@ -24,6 +25,7 @@ const PAGE_FILES = [
   'lib/deko3d_glsl.js',
   'lib/deko3d_package.js',
   'lib/i18n.js',
+  'lib/lzo.js',
   'lib/installer.js',
   'lib/shaders.js',
   'lib/xdvdfs.js',
@@ -42,7 +44,7 @@ const PAGE_FILES = [
   'wasm/spirv_cross.mjs',
   'wasm/spirv_cross.wasm',
   'release/manifest.json',
-  'release/recipe-0.8.0.json',
+  'release/recipe-1.0.0.json',
   'release/LICENSES.txt',
 ];
 // How long a page file waits for the network before the kept copy is used (the network still refreshes it).

@@ -122,6 +122,43 @@ function chosenFiles(entries) {
 
 const quiet = () => ({ print: () => {}, printErr: () => {} });
 
+// mk9-nx: the shaders' compilation over workers of their own (deko3d_worker.js), one fewer than the computer's cores
+// (at most 8): 19,010 shaders take about 45 minutes on one core and 10 with 7 workers. Each worker takes a batch at a
+// time.
+const BATCH = 32;
+function workerPool() {
+  const count = Math.max(1, Math.min(8, (self.navigator?.hardwareConcurrency || 4) - 1));
+  return async (jobs, passes, done) => {
+    const workers = Array.from({ length: count }, () => new Worker('./deko3d_worker.js', { type: 'module' }));
+    let next = 0;
+    try {
+      await Promise.all(workers.map((w) => new Promise((resolve, reject) => {
+        const feed = () => {
+          if (next >= jobs.length) {
+            resolve();
+            return;
+          }
+          const batch = jobs.slice(next, next + BATCH);
+          next += BATCH;
+          w.postMessage({ jobs: batch, passes });
+        };
+        w.onmessage = ({ data }) => {
+          if (data.type === 'error') {
+            reject(new Error(data.message));
+            return;
+          }
+          done(data.made);
+          feed();
+        };
+        w.onerror = (event) => reject(new Error(event.message || 'a shader worker failed'));
+        feed();
+      })));
+    } finally {
+      workers.forEach((w) => w.terminate());
+    }
+  };
+}
+
 self.onmessage = async ({ data }) => {
   setLanguage(data.lang);
   const sink = portSink(data.port);
@@ -143,7 +180,7 @@ self.onmessage = async ({ data }) => {
       fetchBytes('./release/LICENSES.txt'),
       fetchBytes('./shader_common.h'),
       fetchBytes(`./release/${build.recipe}`),
-      // the Renut renderer's translator header (usf4-nx's app/thirdparty/reblue-XenosRecomp/XenosRecomp/)
+      // the Renut renderer's translator header (mk9-nx's app/thirdparty/reblue-XenosRecomp/XenosRecomp/)
       build.deko3d ? fetchBytes('./renut_shader_common.h') : null,
     ]);
     const recipe = JSON.parse(new TextDecoder().decode(recipeBytes));
@@ -163,7 +200,7 @@ self.onmessage = async ({ data }) => {
     };
     const result = await createPackage(chosen, { manifest, recipe, nro, licenses, shaderCommon, renutShaderCommon },
       modules, sink, log, progress,
-      (size) => postMessage({ type: 'size', size }), { update: Boolean(data.update) });
+      (size) => postMessage({ type: 'size', size }), { update: Boolean(data.update), pool: workerPool() });
     postMessage({ type: 'done', result });
   } catch (error) {
     const message = error.message || String(error);

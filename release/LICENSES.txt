@@ -1,13 +1,14 @@
-USF4-NX - licenses of the software in this package
-==================================================
+MK9-NX - licenses of the software in this package
+=================================================
 
-usf4.nro is free software under the GNU General Public License, version 3 (full text below).
-Source code: https://github.com/Thorhax/usf4-nx
+mk9.nro is free software under the GNU General Public License, version 3 (full text below).
+Source code: https://github.com/Thorhax/mk9-nx
 
 It contains code from these projects and libraries, under their own licenses (full texts below):
 
-  usf4-nx, by Thorhax .................................................. GPL-3.0
-  sa2-nx, by ChanseyIsTheBest (the port it was made from) .............. GPL-3.0
+  mk9-nx, by Thorhax ................................................... GPL-3.0
+  usf4-nx, by Thorhax (the port it was made from) ...................... GPL-3.0
+  sa2-nx, by ChanseyIsTheBest (the port usf4-nx was made from) ......... GPL-3.0
   masseffect-nx, by NebadasSwifty (the native renderer it grew from) ... GPL-3.0
   banjo-nx, by ChanseyIsTheBest (Renut's renderer as it carries it) .... GPL-3.0
   reNut, by masterspike52 (the Direct3D-level renderer) ................ used with its author's permission
@@ -41,15 +42,15 @@ It contains code from these projects and libraries, under their own licenses (fu
   pl_mpeg, by Dominic Szablewski (the intro video's decoder) ........... MIT
 
 FFmpeg and libmspack are covered by the GNU Lesser General Public License, version 2.1. Their source code, including
-the files changed for this port, and everything needed to rebuild usf4.nro and relink it with modified versions of
-those libraries, are available at https://github.com/Thorhax/usf4-nx (see THIRD_PARTY_NOTICES.md and
+the files changed for this port, and everything needed to rebuild mk9.nro and relink it with modified versions of
+those libraries, are available at https://github.com/Thorhax/mk9-nx (see THIRD_PARTY_NOTICES.md and
 docs/building.md there). FFmpeg is https://ffmpeg.org; libmspack is https://www.cabextract.org.uk/libmspack/.
 
-The folder game_root/ and the files deko3d_glsl.bin and deko3d_shaders.bin (sa2_shaders.mesp and sa2_shaders.mesp.idx
-before 0.8.0) are made from your own copy of the game. They are not covered by these licenses and must not be shared.
+The folder game_root/ and the files deko3d_glsl.bin and deko3d_shaders.bin are made from your own copy of the game.
+They are not covered by these licenses and must not be shared.
 
 ====================================================================================================================
-GNU General Public License, version 3 (usf4-nx, sa2-nx, masseffect-nx, nfsmw-nx, NFSMW Recompiled, banjo-nx)
+GNU General Public License, version 3 (mk9-nx, usf4-nx, sa2-nx, masseffect-nx, nfsmw-nx, NFSMW Recompiled, banjo-nx)
 ====================================================================================================================
 
                     GNU GENERAL PUBLIC LICENSE
@@ -819,16 +820,16 @@ redistribute it freely, subject to the following restrictions:
    distribution.
 
 uam is used with the patches of SwitchWakerHD (Mozilla Public License, version 2.0: https://mozilla.org/MPL/2.0/) and
-banjo-nx; their source code is in app/thirdparty/uam of https://github.com/Thorhax/usf4-nx
+banjo-nx; their source code is in app/thirdparty/uam of https://github.com/Thorhax/mk9-nx
 (app/thirdparty/uam/PATCHES.md lists them).
 
 ====================================================================================================================
 reNut, by masterspike52
 ====================================================================================================================
 
-Renut's Direct3D-level renderer (app/src/renut_engine of usf4-nx) comes from reNut
+Renut's Direct3D-level renderer (app/src/renut_engine of mk9-nx) comes from reNut
 (https://github.com/masterspike52/reNut), as banjo-nx carries it. reNut has no license file; its author permits its
-reuse in these ports. banjo-nx's, sa2-nx's and usf4-nx's changes to it are under the GNU General Public License, version 3.
+reuse in these ports. banjo-nx's, sa2-nx's, usf4-nx's and mk9-nx's changes to it are under the GNU General Public License, version 3.
 
 ====================================================================================================================
 Mesa (MIT): the shader compiler code uam imports

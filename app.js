@@ -14,7 +14,7 @@ const fingerprint = document.getElementById('fingerprint');
 const languages = document.getElementById('languages');
 const sourceLink = document.getElementById('sourceLink');
 const manifest = fetch('./release/manifest.json').then((r) => r.json());
-const LANGUAGE_KEY = 'usf4-nx.language';
+const LANGUAGE_KEY = 'mk9-nx.language';
 // the files the player chose ([{ path, file }]) and what was found in them
 let source = null;
 let check = 0;
@@ -27,9 +27,9 @@ let busy = false;
 // whether the chosen game has all its files (an extracted folder may not): otherwise only the update can be made
 let complete = false;
 
-// On GitHub Pages (<owner>.github.io/<repository>) the source code is the owner's usf4-nx repository.
+// On GitHub Pages (<owner>.github.io/<repository>) the source code is the owner's mk9-nx repository.
 if (location.hostname.endsWith('.github.io')) {
-  sourceLink.href = `https://github.com/${location.hostname.split('.')[0]}/usf4-nx`;
+  sourceLink.href = `https://github.com/${location.hostname.split('.')[0]}/mk9-nx`;
 } else {
   sourceLink.removeAttribute('href');
 }
@@ -83,13 +83,13 @@ function renderDetected() {
       showDetected('', t('checking'));
       break;
     case 'supported':
-      showDetected('good', 'Ultra Street Fighter IV', t('supported'));
+      showDetected('good', 'Mortal Kombat Komplete Edition', t('supported'));
       break;
     case 'incomplete':
-      showDetected('bad', 'Ultra Street Fighter IV', t('incompleteGame', { count: v.count, expected: v.expected }));
+      showDetected('bad', 'Mortal Kombat Komplete Edition', t('incompleteGame', { count: v.count, expected: v.expected }));
       break;
     case 'unsupported':
-      showDetected('bad', 'Ultra Street Fighter IV', t('unsupported'), v.hash);
+      showDetected('bad', 'Mortal Kombat Komplete Edition', t('unsupported'), v.hash);
       break;
     case 'notGame':
       showDetected('bad', t('notGame'), v.other ? t('otherTitle', { name: v.other }) : t(v.code || 'noGame'));
@@ -287,7 +287,7 @@ async function makePackage(onlyUpdate) {
     log(t('error', { message: error.message === 'noStreaming' ? t('noStreaming') : error.message }), true);
     return;
   }
-  const filename = onlyUpdate ? 'usf4-nx-update.zip' : 'usf4-nx.zip';
+  const filename = onlyUpdate ? 'mk9-nx-update.zip' : 'mk9-nx.zip';
   busy = true;
   setButtons(false);
   bar.hidden = false;

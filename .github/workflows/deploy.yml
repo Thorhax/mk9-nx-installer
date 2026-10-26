@@ -1,6 +1,6 @@
 name: Deploy to GitHub Pages
 
-# The NRO is not in this repository: it is an asset (usf4.nro) of a release of the usf4-nx repository of the same
+# The NRO is not in this repository: it is an asset (mk9.nro) of a release of the mk9-nx repository of the same
 # owner. Each deployment downloads it into release/, checks it against release/manifest.json and publishes the page
 # with it. Run it by hand (Actions > Deploy to GitHub Pages > Run workflow) after publishing a new release there.
 
@@ -10,7 +10,7 @@ on:
   workflow_dispatch:
     inputs:
       tag:
-        description: Release of usf4-nx to take the NRO from (empty for the latest)
+        description: Release of mk9-nx to take the NRO from (empty for the latest)
         required: false
         default: ''
 
@@ -40,8 +40,8 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
           TAG: ${{ inputs.tag }}
-          REPO: ${{ github.repository_owner }}/usf4-nx
-        run: gh release download $TAG --repo "$REPO" --pattern 'usf4.nro' --dir release --clobber
+          REPO: ${{ github.repository_owner }}/mk9-nx
+        run: gh release download $TAG --repo "$REPO" --pattern 'mk9.nro' --dir release --clobber
 
       - name: Check it against the list of builds
         run: node .github/verify_release.mjs
