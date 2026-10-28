@@ -1,7 +1,7 @@
 // mk9-nx-installer: prints a build's entry of release/manifest.json from an extracted game folder, the build's recipe,
 // default.xex's image, the NRO and the package test/package_mk9_node.mjs made.
 // Usage: node test/manifest_entry_node.mjs <game folder> <recipe.json> <default.xex image> <nro> <deko3d_glsl.bin>
-//        <version>
+//        <version> [<game list.json> (test/game_list_node.mjs)]
 import fs from 'node:fs';
 import path from 'node:path';
 import { createHash } from 'node:crypto';
@@ -9,7 +9,7 @@ import { diskFile } from './node_files.mjs';
 import { containersFingerprint, shaderContainers } from '../lib/shaders.js';
 import { MK9_DEKO3D_PASSES } from '../lib/deko3d.js';
 
-const [folder, recipePath, imagePath, nroPath, pkgPath, version] = process.argv.slice(2);
+const [folder, recipePath, imagePath, nroPath, pkgPath, version, gameListPath] = process.argv.slice(2);
 const sha = (bytes) => createHash('sha256').update(bytes).digest('hex');
 const files = [];
 const walk = (dir, rel) => {
@@ -35,6 +35,7 @@ console.log(JSON.stringify({
   containers_sha256: await containersFingerprint(containers),
   game_files: files.length,
   game_bytes: files.reduce((sum, f) => sum + f.size, 0),
+  ...(gameListPath ? { game_list: path.basename(gameListPath) } : {}),
   deko3d: {
     passes: MK9_DEKO3D_PASSES,
     shaders: containers.map((c) => c.name.slice(0, 3) + c.name.slice(3, -4).toUpperCase()),

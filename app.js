@@ -1,4 +1,4 @@
-import { findGame, identifyGame, lzxStep, programPath } from './lib/installer.js';
+import { checkGameFiles, findGame, identifyGame, lzxStep, problemNames, programPath } from './lib/installer.js';
 import { FLAGS } from './lib/flags.js';
 import { LANGUAGES, formatSize, getLanguage, preferredLanguage, setLanguage, t } from './lib/i18n.js';
 
@@ -87,6 +87,9 @@ function renderDetected() {
       break;
     case 'incomplete':
       showDetected('bad', 'Mortal Kombat Komplete Edition', t('incompleteGame', { count: v.count, expected: v.expected }));
+      break;
+    case 'damaged':
+      showDetected('bad', 'Mortal Kombat Komplete Edition', t('damagedGame', { count: v.count, names: v.names }));
       break;
     case 'unsupported':
       showDetected('bad', 'Mortal Kombat Komplete Edition', t('unsupported'), v.hash);
@@ -185,11 +188,20 @@ async function choose(entries, label = '') {
         return;
       }
       if (game.build) {
+        // the sizes of the game's files (1.0.1): a damaged disc image is refused before anything is made
+        const problems = game.build.game_list
+          ? checkGameFiles(found.game.files, await (await fetch(`./release/${game.build.game_list}`)).json())
+          : [];
+        if (id !== check) {
+          return;
+        }
         source = entries;
-        complete = found.game.files.length >= game.build.game_files;
-        detectedView = complete
-          ? { kind: 'supported' }
-          : { kind: 'incomplete', count: found.game.files.length, expected: game.build.game_files };
+        complete = found.game.files.length >= game.build.game_files && !problems.length;
+        detectedView = found.game.files.length < game.build.game_files
+          ? { kind: 'incomplete', count: found.game.files.length, expected: game.build.game_files }
+          : problems.length
+            ? { kind: 'damaged', count: problems.length, names: problemNames(problems) }
+            : { kind: 'supported' };
         setButtons(true);
         // the program is kept by the browser now, so the package can be made even if the connection drops
         const url = new URL(programPath(game.build), location.href).href;

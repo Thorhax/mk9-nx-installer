@@ -45,6 +45,7 @@ const PAGE_FILES = [
   'wasm/spirv_cross.wasm',
   'release/manifest.json',
   'release/recipe-1.0.0.json',
+  'release/game-files-1.0.0.json',
   'release/LICENSES.txt',
 ];
 // How long a page file waits for the network before the kept copy is used (the network still refreshes it).

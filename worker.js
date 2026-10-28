@@ -175,14 +175,16 @@ self.onmessage = async ({ data }) => {
       throw new Error(t('notSupportedYet', { hash: xexHash }));
     }
     log(t('downloadingBuild'));
-    const [nro, licenses, shaderCommon, recipeBytes, renutShaderCommon] = await Promise.all([
+    const [nro, licenses, shaderCommon, recipeBytes, renutShaderCommon, gameListBytes] = await Promise.all([
       fetchBuild(programPath(build), build.nro_size, build.nro_sha256),
       fetchBytes('./release/LICENSES.txt'),
       fetchBytes('./shader_common.h'),
       fetchBytes(`./release/${build.recipe}`),
       // the Renut renderer's translator header (mk9-nx's app/thirdparty/reblue-XenosRecomp/XenosRecomp/)
       build.deko3d ? fetchBytes('./renut_shader_common.h') : null,
+      build.game_list ? fetchBytes(`./release/${build.game_list}`) : null,
     ]);
+    const gameList = gameListBytes ? JSON.parse(new TextDecoder().decode(gameListBytes)) : null;
     const recipe = JSON.parse(new TextDecoder().decode(recipeBytes));
     const nroHash = await sha256(nro);
     if (nroHash !== build.nro_sha256) {
@@ -198,7 +200,8 @@ self.onmessage = async ({ data }) => {
         spirvCross: await createSpirvCrossModule(quiet()),
       } : {}),
     };
-    const result = await createPackage(chosen, { manifest, recipe, nro, licenses, shaderCommon, renutShaderCommon },
+    const result = await createPackage(chosen, { manifest, recipe, nro, licenses, shaderCommon, renutShaderCommon,
+      gameList },
       modules, sink, log, progress,
       (size) => postMessage({ type: 'size', size }), { update: Boolean(data.update), pool: workerPool() });
     postMessage({ type: 'done', result });

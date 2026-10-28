@@ -1,4 +1,5 @@
-// Checks that every NRO named in release/manifest.json is in release/ and has the SHA-256 the list expects.
+// Checks that every NRO named in release/manifest.json is in release/ and has the SHA-256 the list expects, and that
+// every game_list it names is there.
 // Usage: node .github/verify_release.mjs (from the root of the repository)
 import fs from 'node:fs';
 import { createHash } from 'node:crypto';
@@ -11,6 +12,10 @@ for (const build of manifest.builds) {
     console.error(`missing: ${build.nro} (${build.edition} ${build.version})`);
     bad++;
     continue;
+  }
+  if (build.game_list && !fs.existsSync(`release/${build.game_list}`)) {
+    console.error(`missing: ${build.game_list} (the game list of ${build.edition} ${build.version})`);
+    bad++;
   }
   const hash = createHash('sha256').update(fs.readFileSync(path)).digest('hex');
   if (hash !== build.nro_sha256) {

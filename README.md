@@ -17,8 +17,11 @@ ready to extract into `sdmc:/switch/`. Everything runs in your browser: the game
    `lib/xdvdfs.js`) or a folder with the extracted disc and its `default.xex`.
 2. Identifies the game by the SHA-256 of `default.xex` (or of its decompressed image, for an executable another tool
    rebuilt) and picks its build from `release/manifest.json`.
-3. Downloads that build's NRO and checks its SHA-256.
-4. Makes the Switch renderer's shaders, `deko3d_glsl.bin`, from the game's own files. The build's recipe
+3. Checks every game file's size against the build's list (`release/game-files-<version>.json`: path, size and
+   CRC-32 of each file, no game data). A copy with a file missing or cut short is refused with the file's name (only
+   the update zip can be made from it). `default.xex` is left out, since a rebuilt one is accepted.
+4. Downloads that build's NRO and checks its SHA-256.
+5. Makes the Switch renderer's shaders, `deko3d_glsl.bin`, from the game's own files. The build's recipe
    (`release/recipe-<version>.json`, written by `tools/installer_recipe_mk9.py` of mk9-nx from
    `shaders/tools/ue3_shader_locate.cpp`'s locations) says where each of the package's 19,010 shader containers is in
    your files: a slice of one of the LZO-compressed chunks of the game's Unreal packages (`Asset/*.xxx`, read with
@@ -30,7 +33,9 @@ ready to extract into `sdmc:/switch/`. Everything runs in your browser: the game
    several workers at once (`deko3d_worker.js`, one fewer than the computer's cores, at most 8): the 19,010 shaders
    take about 10 minutes with 7 workers (Chromium, 2026-10-27) and about 45 on one core. The package must match the
    SHA-256 of the build's `"deko3d"` entry.
-5. Streams the zip to disk through the service worker, so a 7 GB package never has to fit in memory.
+6. Streams the zip to disk through the service worker, so a 7 GB package never has to fit in memory. Each game
+   file's CRC-32, which the zip computes anyway, is compared with the list: a file with damaged bytes stops the
+   download with its name.
 
 The zip holds `mk9-nx/mk9.nro` with its `LICENSES.txt`, the shaders (`deko3d_glsl.bin`) and the game files in
 `mk9-nx/game_root/` (as on the disc, without `$SystemUpdate`). The update zip holds the NRO, its licenses and the
@@ -76,12 +81,18 @@ node test/package_mk9_node.mjs <game folder> release/recipe-<version>.json <defa
 node test/xex_node.mjs <game folder>/default.xex
 ```
 
+The build's game list, from the same folder (`node test/game_check_node.mjs <game folder>` then checks the checks):
+
+```sh
+node test/game_list_node.mjs <game folder> release/game-files-<version>.json
+```
+
 Test the release NRO with exactly that `deko3d_glsl.bin` beside it first (no DKSH cache, no pipeline list), then write
 the build's entry of `release/manifest.json` (the script prints it as JSON):
 
 ```sh
 node test/manifest_entry_node.mjs <game folder> release/recipe-<version>.json <default.xex image> <mk9.nro> \
-    deko3d_glsl.bin <version>
+    deko3d_glsl.bin <version> release/game-files-<version>.json
 ```
 
 ## Testing locally

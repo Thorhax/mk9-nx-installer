@@ -3,16 +3,17 @@
   "builds": [
     {
       "edition": "Xbox 360 disc",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "xex_sha256": "e51751328751287b2a6113c815b99f470d1ea0c88f5d9d9f9b1942a28b3e7f6d",
       "image_sha256": "8dcc16cbf2b1e08f1a3c2ef9fe047afff93883439072c23959aa3515701166f2",
       "nro": "mk9.nro",
-      "nro_sha256": "b8d73ee10aee51ea6b2f346ed60b6b9dd0b0f03a739e58a350dab23c89506966",
-      "nro_size": 90448230,
+      "nro_sha256": "7ec82139c0de9cf63f0f40c8e153e144c12637fedee24b8522248e35d56edd77",
+      "nro_size": 90624358,
       "recipe": "recipe-1.0.0.json",
       "containers_sha256": "ccbb6a23a7d2909d07b7e664b1d103532bbf8ef686de898b88a897df96f44988",
       "game_files": 1263,
       "game_bytes": 7261360935,
+      "game_list": "game-files-1.0.0.json",
       "deko3d": {
         "passes": "scale1,fragscale,alpha,tess,bonerow,vszero,vsout,pszero,pred,predmul,sext,bool01,sel,alphamask,earlyhoist,ifmerge,dowhile,selsame,deadcomp,guardsel,lightbranch,nullps,txq,earlyz,gpr32,bonesel,aw4",
         "shaders": [
