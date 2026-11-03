@@ -37,7 +37,7 @@ ready to extract into `sdmc:/switch/`. Everything runs in your browser: the game
    file's CRC-32, which the zip computes anyway, is compared with the list: a file with damaged bytes stops the
    download with its name.
 
-The zip holds `mk9-nx/mk9.nro` with its `LICENSES.txt`, the shaders (`deko3d_glsl.bin`) and the game files in
+The zip holds `mk9-nx/mk9-nx.nro` (the release's `mk9.nro`, named after its folder) with its `LICENSES.txt`, the shaders (`deko3d_glsl.bin`) and the game files in
 `mk9-nx/game_root/` (as on the disc, without `$SystemUpdate`). The update zip holds the NRO, its licenses and the
 shaders. Neither holds `mk9.toml`: the game writes it at its first start, so an update never overwrites your settings.
 
