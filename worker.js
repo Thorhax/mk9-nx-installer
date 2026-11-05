@@ -124,9 +124,9 @@ const quiet = () => ({ print: () => {}, printErr: () => {} });
 
 // mk9-nx: the shaders' compilation over workers of their own (deko3d_worker.js), one fewer than the computer's cores
 // (at most 8): 19,010 shaders take about 45 minutes on one core and 10 with 7 workers. Each worker takes a batch at a
-// time.
+// time. 1.0.4: kind 'uam' compiles the shader cache's variants on the same workers (5,841: about 2 minutes on 8).
 const BATCH = 32;
-function workerPool() {
+function workerPool(kind = 'glsl') {
   const count = Math.max(1, Math.min(8, (self.navigator?.hardwareConcurrency || 4) - 1));
   return async (jobs, passes, done) => {
     const workers = Array.from({ length: count }, () => new Worker('./deko3d_worker.js', { type: 'module' }));
@@ -140,7 +140,7 @@ function workerPool() {
           }
           const batch = jobs.slice(next, next + BATCH);
           next += BATCH;
-          w.postMessage({ jobs: batch, passes });
+          w.postMessage({ kind, jobs: batch, passes });
         };
         w.onmessage = ({ data }) => {
           if (data.type === 'error') {
@@ -175,7 +175,7 @@ self.onmessage = async ({ data }) => {
       throw new Error(t('notSupportedYet', { hash: xexHash }));
     }
     log(t('downloadingBuild'));
-    const [nro, licenses, shaderCommon, recipeBytes, renutShaderCommon, gameListBytes] = await Promise.all([
+    const [nro, licenses, shaderCommon, recipeBytes, renutShaderCommon, gameListBytes, pipelineList] = await Promise.all([
       fetchBuild(programPath(build), build.nro_size, build.nro_sha256),
       fetchBytes('./release/LICENSES.txt'),
       fetchBytes('./shader_common.h'),
@@ -183,6 +183,7 @@ self.onmessage = async ({ data }) => {
       // the Renut renderer's translator header (mk9-nx's app/thirdparty/reblue-XenosRecomp/XenosRecomp/)
       build.deko3d ? fetchBytes('./renut_shader_common.h') : null,
       build.game_list ? fetchBytes(`./release/${build.game_list}`) : null,
+      build.deko3d?.cache ? fetchBytes(`./release/${build.deko3d.cache.list}`) : null,
     ]);
     const gameList = gameListBytes ? JSON.parse(new TextDecoder().decode(gameListBytes)) : null;
     const recipe = JSON.parse(new TextDecoder().decode(recipeBytes));
@@ -201,9 +202,9 @@ self.onmessage = async ({ data }) => {
       } : {}),
     };
     const result = await createPackage(chosen, { manifest, recipe, nro, licenses, shaderCommon, renutShaderCommon,
-      gameList },
+      gameList, pipelineList },
       modules, sink, log, progress,
-      (size) => postMessage({ type: 'size', size }), { update: Boolean(data.update), pool: workerPool() });
+      (size) => postMessage({ type: 'size', size }), { update: Boolean(data.update), pool: workerPool(), cachePool: workerPool('uam') });
     postMessage({ type: 'done', result });
   } catch (error) {
     const message = error.message || String(error);

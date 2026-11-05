@@ -24,6 +24,7 @@ const PAGE_FILES = [
   'lib/deko3d.js',
   'lib/deko3d_glsl.js',
   'lib/deko3d_package.js',
+  'lib/deko3d_cache.js',
   'lib/i18n.js',
   'lib/lzo.js',
   'lib/installer.js',
@@ -43,9 +44,12 @@ const PAGE_FILES = [
   'wasm/renut_hlsl.wasm',
   'wasm/spirv_cross.mjs',
   'wasm/spirv_cross.wasm',
+  'wasm/uam.mjs',
+  'wasm/uam.wasm',
   'release/manifest.json',
   'release/recipe-1.0.0.json',
   'release/game-files-1.0.0.json',
+  'release/pipeline-list-1.0.4.bin.gz',
   'release/LICENSES.txt',
 ];
 // How long a page file waits for the network before the kept copy is used (the network still refreshes it).

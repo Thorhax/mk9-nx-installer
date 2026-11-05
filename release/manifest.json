@@ -3,12 +3,12 @@
   "builds": [
     {
       "edition": "Xbox 360 disc",
-      "version": "1.0.3",
+      "version": "1.0.4",
       "xex_sha256": "e51751328751287b2a6113c815b99f470d1ea0c88f5d9d9f9b1942a28b3e7f6d",
       "image_sha256": "8dcc16cbf2b1e08f1a3c2ef9fe047afff93883439072c23959aa3515701166f2",
       "nro": "mk9.nro",
-      "nro_sha256": "c624c10b36e7310bc68e0f4e6f1914c581330fdca9dbb6baeb11905d88387502",
-      "nro_size": 90636646,
+      "nro_sha256": "bc398675e2fae4123985a52723b7bbee1f9cd874fafdca6cc5574c49ee737166",
+      "nro_size": 90653030,
       "recipe": "recipe-1.0.0.json",
       "containers_sha256": "ccbb6a23a7d2909d07b7e664b1d103532bbf8ef686de898b88a897df96f44988",
       "game_files": 1263,
@@ -19029,7 +19029,13 @@
           "vs_FFD7B2FBDD893A2A"
         ],
         "package_sha256": "44ca9d8db844c023d56a295557ba46d0f999d2a96f449850fa02d7c19be013ff",
-        "package_size": 228108400
+        "package_size": 228108400,
+        "cache": {
+          "list": "pipeline-list-1.0.4.bin.gz",
+          "list_sha256": "6dd67304ac87af049ef2f2e5cde579577fa8ee117c855b8b256001201e0f6769",
+          "sha256": "5c15fad3fd71c03fce768c4d0c9a6b6305cd796f292ab83e2370a6ee3d839610",
+          "size": 15327716
+        }
       }
     }
   ]

@@ -33,11 +33,20 @@ ready to extract into `sdmc:/switch/`. Everything runs in your browser: the game
    several workers at once (`deko3d_worker.js`, one fewer than the computer's cores, at most 8): the 19,010 shaders
    take about 10 minutes with 7 workers (Chromium, 2026-10-27) and about 45 on one core. The package must match the
    SHA-256 of the build's `"deko3d"` entry.
-6. Streams the zip to disk through the service worker, so a 7 GB package never has to fit in memory. Each game
+6. 1.0.4: compiles those shaders for the Switch, `deko3d_shaders.bin`: every variant of mk9-nx's pipeline list
+   (`release/pipeline-list-<version>.bin.gz`, the repository's `shaders/deko3d_pipeline_list.xz`: shader hashes and
+   render state only) made from the package's GLSL as the console makes it (`lib/deko3d_cache.js`, mk9-nx's
+   `tools/deko3d_variant_cache.py` in JavaScript) and compiled by uam, the console's own compiler (`wasm/uam`, built
+   from mk9-nx's `app/thirdparty/uam` with `wasm/src/uam/build_wasm_uam.sh`), on the same workers: 5,841 variants in
+   about 2 minutes on 8. The cache must match the SHA-256 of the build's `"deko3d"."cache"` entry; the list goes in the
+   zip too (`pipeline_list.bin`: the game builds those pipelines at start). Without it the console compiled each
+   shader the first time it was drawn (the stutters players of 1.0.3 reported).
+7. Streams the zip to disk through the service worker, so a 7 GB package never has to fit in memory. Each game
    file's CRC-32, which the zip computes anyway, is compared with the list: a file with damaged bytes stops the
    download with its name.
 
-The zip holds `mk9-nx/mk9-nx.nro` (the release's `mk9.nro`, named after its folder) with its `LICENSES.txt`, the shaders (`deko3d_glsl.bin`) and the game files in
+The zip holds `mk9-nx/mk9-nx.nro` (the release's `mk9.nro`, named after its folder) with its `LICENSES.txt`, the shaders (`deko3d_glsl.bin`, and compiled: `deko3d_shaders.bin`), the pipeline list
+(`pipeline_list.bin`) and the game files in
 `mk9-nx/game_root/` (as on the disc, without `$SystemUpdate`). The update zip holds the NRO, its licenses and the
 shaders. Neither holds `mk9.toml`: the game writes it at its first start, so an update never overwrites your settings.
 
@@ -52,7 +61,7 @@ connection.
 | `worker.js` | Builds the package off the main thread; its pool of `deko3d_worker.js` compiles the shaders |
 | `sw.js` | Offline cache and the download stream |
 | `lib/` | Disc image reader, XEX reader, LZO and Unreal package chunks, shader recipe, deko3d package, zip writer |
-| `wasm/` | WebAssembly builds of the shader translator, DXC, SPIRV-Cross and the LZX decoder |
+| `wasm/` | WebAssembly builds of the shader translator, DXC, SPIRV-Cross, uam and the LZX decoder |
 | `renut_shader_common.h` | The translator's HLSL header (from mk9-nx's `app/thirdparty/reblue-XenosRecomp/XenosRecomp`) |
 | `release/` | The list of builds, their shader recipes and the licenses of the NRO |
 | `test/` | Node scripts that run the same code as the page |
@@ -60,7 +69,9 @@ connection.
 `wasm/renut_hlsl.*` is built from the mk9-nx repository with `wasm/src/deko3d/build_wasm_deko3d.sh renut_hlsl`
 (Emscripten 6.0.12; `USF4_NX` pointing at the mk9-nx checkout). `wasm/dxc_web.*` is the WebAssembly DXC of
 [nfsmw-nx-installer](https://github.com/StevensND/nfsmw-nx-installer) (unmodified DXC v2025.1 with the
-`dxc_web.cpp` wrapper); `wasm/spirv_cross.*` and `wasm/lzx.*` are usf4-nx-installer's. See [NOTICES.md](NOTICES.md).
+`dxc_web.cpp` wrapper); `wasm/spirv_cross.*` and `wasm/lzx.*` are usf4-nx-installer's. `wasm/uam.*` is built with
+`wasm/src/uam/build_wasm_uam.sh` (Emscripten 4.0.10, the `emscripten/emsdk:4.0.10` image; `MK9_NX` pointing at the
+mk9-nx checkout): its DKSH is byte for byte the native uam's. See [NOTICES.md](NOTICES.md).
 
 ## Deployment
 
@@ -87,8 +98,15 @@ The build's game list, from the same folder (`node test/game_check_node.mjs <gam
 node test/game_list_node.mjs <game folder> release/game-files-<version>.json
 ```
 
-Test the release NRO with exactly that `deko3d_glsl.bin` beside it first (no DKSH cache, no pipeline list), then write
-the build's entry of `release/manifest.json` (the script prints it as JSON):
+The compiled shaders from that package and mk9-nx's list (gzip of `shaders/deko3d_pipeline_list.xz`, decompressed;
+the script prints the `"cache"` object of the build's `"deko3d"` entry):
+
+```sh
+node test/cache_node.mjs deko3d_glsl.bin release/pipeline-list-<version>.bin.gz deko3d_shaders.bin
+```
+
+Test the release NRO with exactly those files beside it first, then write the build's entry of `release/manifest.json`
+(the script prints it as JSON; add the `"cache"` object to its `"deko3d"`):
 
 ```sh
 node test/manifest_entry_node.mjs <game folder> release/recipe-<version>.json <default.xex image> <mk9.nro> \
