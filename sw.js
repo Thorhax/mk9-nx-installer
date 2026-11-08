@@ -49,7 +49,7 @@ const PAGE_FILES = [
   'release/manifest.json',
   'release/recipe-1.0.0.json',
   'release/game-files-1.0.0.json',
-  'release/pipeline-list-1.0.4.bin.gz',
+  'release/pipeline-list-1.0.6.bin.gz',
   'release/LICENSES.txt',
 ];
 // How long a page file waits for the network before the kept copy is used (the network still refreshes it).

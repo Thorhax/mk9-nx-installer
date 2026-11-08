@@ -124,7 +124,7 @@ const quiet = () => ({ print: () => {}, printErr: () => {} });
 
 // mk9-nx: the shaders' compilation over workers of their own (deko3d_worker.js), one fewer than the computer's cores
 // (at most 8): 19,010 shaders take about 45 minutes on one core and 10 with 7 workers. Each worker takes a batch at a
-// time. 1.0.4: kind 'uam' compiles the shader cache's variants on the same workers (5,841: about 2 minutes on 8).
+// time. 1.0.4: kind 'uam' compiles the shader cache's variants on the same workers (6,150 since 1.0.6: about 2 minutes on 8).
 const BATCH = 32;
 function workerPool(kind = 'glsl') {
   const count = Math.max(1, Math.min(8, (self.navigator?.hardwareConcurrency || 4) - 1));

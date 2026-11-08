@@ -37,7 +37,7 @@ ready to extract into `sdmc:/switch/`. Everything runs in your browser: the game
    (`release/pipeline-list-<version>.bin.gz`, the repository's `shaders/deko3d_pipeline_list.xz`: shader hashes and
    render state only) made from the package's GLSL as the console makes it (`lib/deko3d_cache.js`, mk9-nx's
    `tools/deko3d_variant_cache.py` in JavaScript) and compiled by uam, the console's own compiler (`wasm/uam`, built
-   from mk9-nx's `app/thirdparty/uam` with `wasm/src/uam/build_wasm_uam.sh`), on the same workers: 5,841 variants in
+   from mk9-nx's `app/thirdparty/uam` with `wasm/src/uam/build_wasm_uam.sh`), on the same workers: 6,150 variants in
    about 2 minutes on 8. The cache must match the SHA-256 of the build's `"deko3d"."cache"` entry; the list goes in the
    zip too (`pipeline_list.bin`: the game builds those pipelines at start). Without it the console compiled each
    shader the first time it was drawn (the stutters players of 1.0.3 reported).
